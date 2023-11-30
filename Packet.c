@@ -74,6 +74,9 @@ void ProcessPacket(unsigned char* buffer, int size, char* pip_so)
               printf("DNS Packet Captured\t");
         }
         break;
+    default:
+        break;
+    }
 }
 
 // ICMP 패킷 세부 정보를 기록하는 함수
@@ -99,7 +102,7 @@ void LogIcmpPacket(unsigned char* buffer, int size, char* pip_so)
     fprintf(logfile, " | Checksum             : %d\n", ntohs(icmph->checksum));
     fprintf(logfile, " + Identifier           : %u\n", ntohs(icmph->un.echo.id));
     fprintf(logfile, " | Sequence Number      : %u\n", ntohs(icmph->un.echo.sequence));
-
+    
     // IP 헤더 데이터 로깅
     fprintf(logfile, "\n");
     fprintf(logfile, "IP Header\n");
@@ -227,7 +230,8 @@ void LogHttpPacket(unsigned char* buffer, int size, char* pip_so)
     fprintf(logfile, " + Source IP: %s\n", inet_ntoa(source.sin_addr));
     fprintf(logfile, " + Destination IP: %s\n", inet_ntoa(dest.sin_addr));
     fprintf(logfile, " + Protocol: %u\n", (unsigned int)iph->protocol);
-    
+    printf(Source IP: %s ", inet_ntoa(source.sin_addr));
+    printf(Destination IP: %s\n", inet_ntoa(dest.sin_addr));
     // TCP 헤더 정보 로깅
     struct tcphdr* tcph = (struct tcphdr*)(buffer + iphdrlen + sizeof(struct ethhdr));
     fprintf(logfile, "\nTCP Header\n");
